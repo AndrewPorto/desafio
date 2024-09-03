@@ -39,7 +39,7 @@ function verificarFibonacci() {
 }
 
 
-const jsonUrl = 'db.json';
+const jsonUrl = 'dados.json';
 
 async function carregarDados() {
     try {
@@ -57,19 +57,19 @@ async function carregarDados() {
 
 function preencherTabela(dados) {
     const tbody = document.querySelector('#tabelaFaturamento tbody');
-    tbody.innerHTML = ''; // Limpar a tabela antes de adicionar novos dados
+    tbody.innerHTML = '';
 
     dados.forEach(dia => {
         const tr = document.createElement('tr');
         const tdDia = document.createElement('td');
-        const tdNomeDia = document.createElement('td');
         const tdValor = document.createElement('td');
 
+        const valorFormatado = dia.valor.toFixed(2).replace('.', ',');
+
         tdDia.textContent = dia.dia;
-        tdValor.textContent = dia.valor === 0 ? '0' : `R$ ${dia.valor}`;
-        tdNomeDia.textContent = dia.Nome;
+        tdValor.textContent = dia.valor === 0 ? '0' : `R$ ${valorFormatado}`;
+ 
         tr.appendChild(tdDia);
-        tr.appendChild(tdNomeDia);
         tr.appendChild(tdValor);
         tbody.appendChild(tr);
     });
@@ -93,10 +93,12 @@ function calcularEstatisticas(dados) {
 
     const diasAcimaDaMedia = diasComFaturamento.filter(d => d.valor > mediaMensal).length;
 
+    const formatarValor = valor => valor.toFixed(2).replace('.', ',');
 
-    document.getElementById('menorValor').textContent = `Menor valor: R$ ${menorValor}`;
-    document.getElementById('maiorValor').textContent = `Maior valor: R$ ${maiorValor}`;
-    document.getElementById('mediaValor').textContent = `Média: R$${mediaMensal.toFixed(2)}`;
+
+    document.getElementById('menorValor').textContent = `Menor valor: R$ ${formatarValor(menorValor)}`;
+    document.getElementById('maiorValor').textContent = `Maior valor: R$ ${formatarValor(maiorValor)}`;
+    document.getElementById('mediaValor').textContent = `Média: R$ ${formatarValor(mediaMensal)}`;
     document.getElementById('diasAcimaDaMedia').textContent = `Dias acima da média: ${diasAcimaDaMedia}`;
 }
 
